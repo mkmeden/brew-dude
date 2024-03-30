@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "917185952871",
+    "project_id": "brew-dude",
+    "storage_bucket": "brew-dude.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917185952871:android:a8f16c5b4434b5e57728c2",
+        "android_client_info": {
+          "package_name": "com.example.brew_dude"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCw5APvD70AjFRGN92eXaoVW4tkgzMQyd8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
