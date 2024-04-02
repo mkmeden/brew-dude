@@ -1,7 +1,18 @@
 import 'package:brew_dude/screens/wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+      options:FirebaseOptions(
+        apiKey:'key',
+        appId:'id',
+        messagingSenderId:'sendid',
+        projectId:'brew-dude',
+        storageBucket:'brew-dude.appspot.com',
+      )
+  );
   runApp(const MyApp());
 }
 
