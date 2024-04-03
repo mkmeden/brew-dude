@@ -4,6 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthService{
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Stream<CUser?>? get user{
+
+    return _auth.authStateChanges().map((user)=> _userFromFirebaseUser(user));
+  }
+
   CUser? _userFromFirebaseUser(User? user){
     return user==null?null  : CUser(uid : user.uid);
   }

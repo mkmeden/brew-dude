@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:brew_dude/screens/services/auth.dart';
+import '../../models/Cuser.dart';
+
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
 
@@ -10,6 +12,7 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
 
   final AuthService _auth  = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
