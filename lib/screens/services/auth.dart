@@ -5,7 +5,7 @@ class AuthService{
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Stream<CUser?>? get user{
+  Stream<CUser?> get user{
 
     return _auth.authStateChanges().map((user)=> _userFromFirebaseUser(user));
   }
@@ -24,6 +24,17 @@ class AuthService{
     {
       print(e.toString());
       return null;
+    }
+  }
+
+  Future Signout() async{
+    try {
+      return await _auth.signOut();
+    }
+
+    catch(e)
+    {
+      print(e.toString());
     }
   }
 }
