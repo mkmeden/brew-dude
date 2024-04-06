@@ -4,7 +4,10 @@ import 'package:brew_dude/screens/services/auth.dart';
 import '../../models/Cuser.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+
+
+   final Function toggleView;
+  SignIn({required this.toggleView});
 
   @override
   State<SignIn> createState() => _SignInState();
@@ -20,8 +23,24 @@ class _SignInState extends State<SignIn> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Sign in to Brew Dude'),
-        backgroundColor: Colors.brown[100],
+        backgroundColor: Colors.brown[300],
         elevation: 0.0,
+        actions: <Widget>[
+          Icon(Icons.person),
+          TextButton(onPressed: (){
+            widget.toggleView();
+
+
+          } ,
+            child: Text('Register',
+              style: TextStyle(
+                  color: Colors.grey[800]
+              ),
+
+            ),
+
+          )
+        ],
       ),
 
       body: Padding(
