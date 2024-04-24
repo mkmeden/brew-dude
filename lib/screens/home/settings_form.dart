@@ -23,88 +23,99 @@ class _SettingsFormState extends State<SettingsForm> {
   Widget build(BuildContext context) {
 
     final CUser? user = Provider.of<CUser?>(context);
+            return StreamBuilder<UserData?>(
+              stream: DatabaseService(uid : user?.uid).userData,
+              builder: (context, snapshot) {
 
 
-    return StreamBuilder<UserData>(
-      stream: DatabaseService(uid : user?.uid).userData,
-      builder: (context, snapshot) {
+                if(snapshot.hasData)
+                  {
 
-        print(snapshot.hasData);
-        if(snapshot.hasData)
-          {
-            print(snapshot.data);
-            return Form(
-                key: formKey,
-                child: Column(
-                  children: <Widget>[
-                    Text('Update Brew' ,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    SizedBox(height: 20),
-                    TextFormField(
-                      validator: (val){
-                        return val!.isEmpty? 'Please enter a Name' : null ;
-                      },
-                      decoration: textInputDecoration,
-                      onChanged: (val){
-                        setState(() {
-                          currentName = val;
-                        });
-                      },
-                    ),
-                    SizedBox(height: 30,),
-                    DropdownButtonFormField(
-                        decoration: textInputDecoration,
-                        value: currentSugar??'0',
-                        items: sugars.map((sugar) {
-                          return DropdownMenuItem(
-                              value: sugar,
-                              child:Text('$sugar sugars')
-                          );
-                        } ).toList(),
-                        onChanged: (val){
+                    UserData? userData = snapshot.data ;
 
-                          setState(() {
-                            currentSugar =val ;
+                    return Form(
+                        key: formKey,
+                        child: Column(
+                          children: <Widget>[
+                            Text('Update Brew' ,
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            SizedBox(height: 20),
+                            TextFormField(
+                              initialValue: userData?.name,
+                              validator: (val){
+                                return val!.isEmpty? 'Please enter a Name' : null ;
+                              },
+                              decoration: textInputDecoration,
+                              onChanged: (val){
+                                setState(() {
+                                  currentName = val;
+                                });
+                              },
+                            ),
+                            SizedBox(height: 30,),
+                            DropdownButtonFormField(
+                                decoration: textInputDecoration,
+                                value: currentSugar??userData?.sugars,
+                                items: sugars.map((sugar) {
+                                  return DropdownMenuItem(
+                                      value: sugar,
+                                      child:Text('$sugar sugars')
+                                  );
+                                } ).toList(),
+                                onChanged: (val){
 
-                          });
-                        }),
+                                  setState(() {
+                                    currentSugar =val ;
 
-                    SizedBox(height: 30,),
+                                  });
+                                }),
 
-                    Slider(value: (currentStrength??100).toDouble(),
-                        min: 100,
-                        max: 900,
-                        activeColor: Colors.brown[(currentStrength??100)],
-                        inactiveColor: Colors.brown[(currentStrength??100)],
-                        divisions: 8,
-                        onChanged:(val){
-                          setState(() {
-                            currentStrength = val.round();
-                          });
-                        }
+                            SizedBox(height: 30,),
 
-                    ),
-                    ElevatedButton(onPressed: (){
-                      print(currentName);
-                      print(currentStrength);
-                      print(currentSugar);
-                    },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.pink
-                        ),
-                        child:Text('Update', style: TextStyle(color: Colors.white),)
-                    )
-                  ],
-                )
+                            Slider(value: (currentStrength??userData?.strength)!.toDouble(),
+                                min: 100,
+                                max: 900,
+                                activeColor: Colors.brown[(currentStrength??100)],
+                                inactiveColor: Colors.brown[(currentStrength??100)],
+                                divisions: 8,
+                                onChanged:(val){
+                                  setState(() {
+                                    currentStrength = val.round();
+                                  });
+                                }
+
+                            ),
+                            ElevatedButton(onPressed: () async{
+
+                              if(formKey.currentState!.validate())
+                                {
+
+                                  await DatabaseService(uid : user?.uid).updateUserData(
+                                      currentSugar ?? userData!.sugars! ,
+                                      currentName?? userData!.name!,
+                                      currentStrength?? userData!.strength!
+                                  );
+                                  Navigator.pop(context);
+                                }
+                            },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.pink
+                                ),
+                                child:Text('Update', style: TextStyle(color: Colors.white),)
+                            )
+                          ],
+                        )
+                    );
+                  }
+
+                else
+                  {
+                    return Loading();
+                  }
+
+              }
             );
-          }
-        else
-          {
-            return Loading();
-          }
 
-      }
-    );
   }
 }

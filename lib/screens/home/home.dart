@@ -6,6 +6,8 @@ import 'package:brew_dude/screens/services/database.dart';
 import 'package:brew_dude/screens/home/settings_form.dart';
 import 'package:brew_dude/screens/home/brewlist.dart';
 import 'package:brew_dude/models/brew.dart';
+import 'package:brew_dude/models/Cuser.dart';
+
 class Home extends StatelessWidget {
 
   final AuthService _auth = AuthService();
@@ -22,7 +24,9 @@ class Home extends StatelessWidget {
         );
       });
     }
-    
+    // final UserData? prepopValues = Provider.of<UserData?>(context);
+    //
+    // print('$prepopValues is the anseer');
     return StreamProvider<List<Brew>?>.value(
       initialData: null,
       value: DatabaseService(uid:null).brews,

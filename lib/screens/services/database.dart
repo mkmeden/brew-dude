@@ -19,13 +19,15 @@ class DatabaseService {
   }
 
 
-  UserData _userDataFromSnapshot(DocumentSnapshot snapshot)
+  UserData? _userDataFromSnapshot(DocumentSnapshot snapshot)
   {
+    Map<String, dynamic> data = snapshot.data()! as Map<String, dynamic>;
+
     return UserData(
-      uid: uid,
-        name : (snapshot.data() as Map)['name'],
-        strength : (snapshot.data() as Map)['strength'],
-        sugars : (snapshot.data() as Map)['sugars'],
+      uid: data['uid'], // this is what i do
+      name: data['name'], // this is what i do
+      sugars: data['sugars'], // this is what i do
+      strength: data['strength'], // this is what i do
 
     );
   }
@@ -48,7 +50,7 @@ class DatabaseService {
     .map(_brewListFromSnapshot);
   }
 
-  Stream<UserData> get userData{
+  Stream<UserData?> get userData{
     return brewCollections.doc(uid).snapshots().map(_userDataFromSnapshot);
   }
 

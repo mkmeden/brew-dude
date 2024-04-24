@@ -1,6 +1,7 @@
 import 'package:brew_dude/models/Cuser.dart';
 import 'package:brew_dude/screens/home/home.dart';
 import 'package:flutter/material.dart';
+import 'package:brew_dude/screens/services/database.dart';
 import 'package:brew_dude/screens/home/home.dart';
 import 'package:brew_dude/screens/authenticate/authenticate.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,11 @@ class _WrapperState extends State<Wrapper> {
     return Authenticate();
 
     else
-      return Home();
+      return StreamProvider<UserData?>.value(
+
+          value: DatabaseService(uid : user.uid).userData,
+          initialData: null,
+          child: Home()
+      );
   }
 }
