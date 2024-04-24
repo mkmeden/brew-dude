@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:brew_dude/screens/services/auth.dart';
+import '../../loading.dart';
 import '../../models/Cuser.dart';
+import 'package:brew_dude/constants.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -16,9 +18,11 @@ class _RegisterState extends State<Register> {
   final AuthService _auth  = AuthService();
   String email = '', password = '' , error = '';
   final _formkey = GlobalKey<FormState>();
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isLoading? Loading() :Scaffold(
       appBar: AppBar(
         title: Text('Register to Brew Dude'),
         backgroundColor: Colors.brown[300],
@@ -47,6 +51,8 @@ class _RegisterState extends State<Register> {
               children: <Widget>[
                 SizedBox(height: 20,),
                 TextFormField(
+                  decoration: textInputDecoration.copyWith(hintText: 'Email'),
+
                   validator: (val) => val!.isEmpty?'Enter an email' : null,
                   onChanged: (val){
                     setState(() {
@@ -57,6 +63,8 @@ class _RegisterState extends State<Register> {
 
                 SizedBox(height: 20,),
                 TextFormField(
+                  decoration: textInputDecoration.copyWith(hintText: 'Password'),
+
                   validator: (val)=> val!.length <6 ? 'Enter a password with characters greater than 6': null,
                   obscureText: true,
                   onChanged: (val) {
@@ -67,7 +75,9 @@ class _RegisterState extends State<Register> {
 
                 TextButton(
                   onPressed: () async{
-
+                      setState(() {
+                        isLoading = true ;
+                      });
                     if(_formkey.currentState?.validate()!=null)
                       {
                         dynamic result = await _auth.registerWithEmailandPassword(email, password);
@@ -75,6 +85,8 @@ class _RegisterState extends State<Register> {
                           {
                             setState(() {
                               error = 'Please supply a valid email';
+                              isLoading = false;
+
                             });
                           }
 
